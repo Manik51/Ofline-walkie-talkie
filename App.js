@@ -1,22 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Switch, PermissionsAndroid, Platform, ToastAndroid, FlatList } from 'react-native';
 import { BleManager } from 'react-native-ble-plx';
+import BLEAdvertiser from 'react-native-ble-advertiser';
 import { theme } from './theme/theme';
 import { registerForPushWakeAsync } from './services/wakeService';
 
 const bleManager = new BleManager();
+const MESH_UUID = '0000fee0-0000-1000-8000-00805f9b34fb'; // shared ID so app instances recognize each other
 
 export default function App() {
   const [isPowerOn, setIsPowerOn] = useState(false);
   const [status, setStatus] = useState('OFFLINE');
   const [wakeStatus, setWakeStatus] = useState('INITIALIZING');
   const [peers, setPeers] = useState([]);
-  const scanSubscription = useRef(null);
 
   useEffect(() => {
     registerForPushWakeAsync().then(token => {
       setWakeStatus(token ? 'WAKE-LINK ACTIVE' : 'WAKE-LINK DISABLED');
     });
+    BLEAdvertiser.setCompanyId(0x00);
     return () => bleManager.destroy();
   }, []);
 
@@ -27,37 +29,48 @@ export default function App() {
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
         PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_ADVERTISE,
       ]);
       return Object.values(granted).every(v => v === 'granted');
     }
     return true;
   };
 
-  const startScan = () => {
+  const startMesh = () => {
     setPeers([]);
-    bleManager.startDeviceScan(null, { allowDuplicates: false }, (error, device) => {
+
+    // Broadcast our presence so other MeshTalk phones can find us
+    BLEAdvertiser.broadcast(MESH_UUID, [], {
+      advertiseMode: BLEAdvertiser.ADVERTISE_MODE_LOW_LATENCY,
+      txPowerLevel: BLEAdvertiser.ADVERTISE_TX_POWER_HIGH,
+      connectable: true,
+      includeDeviceName: true,
+    }).catch(err => console.log('Advertise error:', err));
+
+    // Scan for other MeshTalk phones broadcasting the same UUID
+    bleManager.startDeviceScan([MESH_UUID], { allowDuplicates: false }, (error, device) => {
       if (error) {
         console.log('Scan error:', error);
-        setStatus('SCAN ERROR');
         return;
       }
-      if (device?.name) {
+      if (device) {
         setPeers(prev => (prev.some(p => p.id === device.id) ? prev : [...prev, device]));
       }
     });
   };
 
-  const stopScan = () => {
+  const stopMesh = () => {
     bleManager.stopDeviceScan();
+    BLEAdvertiser.stopBroadcast().catch(() => {});
     setPeers([]);
   };
 
   useEffect(() => {
     if (isPowerOn) {
-      setStatus('SCANNING...');
+      setStatus('BROADCASTING...');
       requestPermissions().then(granted => {
         if (granted) {
-          startScan();
+          startMesh();
           setStatus('READY TO TALK');
           if (Platform.OS === 'android') ToastAndroid.show('Radio ON', ToastAndroid.SHORT);
         } else {
@@ -66,7 +79,7 @@ export default function App() {
         }
       });
     } else {
-      stopScan();
+      stopMesh();
       setStatus('OFFLINE');
     }
   }, [isPowerOn]);
@@ -96,7 +109,7 @@ export default function App() {
         renderItem={({ item }) => (
           <View style={styles.peerRow}>
             <View style={styles.peerDot} />
-            <Text style={styles.peerText}>{item.name}</Text>
+            <Text style={styles.peerText}>{item.name || item.id}</Text>
           </View>
         )}
         ListEmptyComponent={
