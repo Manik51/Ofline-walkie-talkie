@@ -11,7 +11,9 @@
     "expo": "~50.0.14",
     "react": "18.2.0",
     "react-native": "0.73.6",
-    "react-native-nearby-connections": "git+https://github.com/react-native-nearby/react-native-nearby-connections.git"
+    "react-native-nearby-connections": "git+https://github.com/react-native-nearby/react-native-nearby-connections.git",
+    "expo-notifications": "~0.27.6",
+    "expo-task-manager": "~11.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
