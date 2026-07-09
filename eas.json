@@ -3,9 +3,10 @@
     "preview": {
       "android": {
         "buildType": "apk",
-        "env": {
-          "NODE_OPTIONS": "--max-old-space-size=4096"
-        }
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "env": {
+        "NODE_OPTIONS": "--max-old-space-size=4096"
       }
     }
   }
