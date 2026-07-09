@@ -20,9 +20,21 @@
         "BLUETOOTH_CONNECT",
         "BLUETOOTH_SCAN",
         "BLUETOOTH_ADVERTISE",
-        "NEARBY_WIFI_DEVICES"
+        "NEARBY_WIFI_DEVICES",
+        "POST_NOTIFICATIONS",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_CONNECTED_DEVICE"
       ]
     },
+    "plugins": [
+      "expo-task-manager",
+      [
+        "expo-notifications",
+        {
+          "color": "#00F0FF"
+        }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "b30cb65b-c065-4ecb-bbe8-bc7bcb8ea6f8"
