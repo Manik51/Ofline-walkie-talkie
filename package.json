@@ -8,12 +8,13 @@
     "build": "eas build --profile preview --platform android"
   },
   "dependencies": {
-    "expo": "~50.0.14",
-    "react": "18.2.0",
-    "react-native": "0.73.6",
-    "react-native-ble-plx": "^3.2.0",
-    "expo-notifications": "~0.27.6",
-    "expo-task-manager": "~11.7.2"
+  "expo": "~50.0.14",
+  "react": "18.2.0",
+  "react-native": "0.73.6",
+  "react-native-ble-plx": "^3.2.0",
+  "react-native-ble-advertiser": "^0.0.17",
+  "expo-notifications": "~0.27.6",
+  "expo-task-manager": "~11.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
