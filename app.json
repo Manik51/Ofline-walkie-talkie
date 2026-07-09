@@ -3,6 +3,7 @@
     "name": "WalkieTalkie Offline",
     "slug": "offline-walkie-talkie",
     "version": "1.0.0",
+    "owner": "manik5131149s-team",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
     "android": {
