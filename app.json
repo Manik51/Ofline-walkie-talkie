@@ -4,7 +4,6 @@
     "slug": "offline-walkie-talkie",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "android": {
       "package": "com.manik.walkietalkie",
@@ -19,17 +18,7 @@
         "BLUETOOTH_ADVERTISE",
         "NEARBY_WIFI_DEVICES"
       ]
-    },
-    "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "minSdkVersion": 24
-          }
-        }
-      ]
-    ]
+    }
   }
 }
 
