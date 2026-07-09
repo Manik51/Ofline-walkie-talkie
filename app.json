@@ -18,7 +18,11 @@
         "BLUETOOTH_ADVERTISE",
         "NEARBY_WIFI_DEVICES"
       ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b30cb65b-c065-4ecb-bbe8-bc7bcb8ea6f8"
+      }
     }
   }
 }
-
