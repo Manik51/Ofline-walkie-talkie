@@ -30,8 +30,14 @@
       "expo-task-manager",
       [
         "expo-notifications",
+        { "color": "#00F0FF" }
+      ],
+      [
+        "react-native-ble-plx",
         {
-          "color": "#00F0FF"
+          "isBackgroundEnabled": true,
+          "modes": ["peripheral", "central"],
+          "bluetoothAlwaysPermission": "Allow MeshTalk to find nearby radios"
         }
       ]
     ],
