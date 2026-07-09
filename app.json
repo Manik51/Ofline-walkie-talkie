@@ -6,6 +6,9 @@
     "owner": "manik5131149s-team",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
+    "splash": {
+      "backgroundColor": "#000000"
+    },
     "android": {
       "package": "com.manik.walkietalkie",
       "permissions": [
